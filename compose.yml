@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: app
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: ./backend-php
+    ports:
+      - "8081:8000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: "postgresql://app:123@db:5432/app?serverVersion=16&charset=utf8"
+    volumes:
+      - ./backend-php:/app
+
+  frontend:
+    build: ./frontend-react
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend-react:/app
+
+volumes:
+  db-data:
