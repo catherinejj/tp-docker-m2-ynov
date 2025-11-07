@@ -28,12 +28,24 @@ services:
     depends_on:
       - backend
 
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+      ADMINER_DEFAULT_USER: app
+      ADMINER_DEFAULT_PASSWORD: 123
+      ADMINER_DEFAULT_DB: app
+
   portainer:
     image: portainer/portainer-ce:latest
     container_name: portainer
     restart: always
     ports:
-      - "9000:9000"      # accès depuis http://localhost:9000
+      - "9000:9000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data

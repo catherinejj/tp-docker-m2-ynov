@@ -32,22 +32,27 @@ services:
     volumes:
       - ./frontend-react:/app
 
-  portainer:
-    image: portainer/portainer-ce:latest
-    container_name: portainer
-    restart: always
-    ports:
-      - "9001:9000"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
-
   adminer:
     image: adminer
     ports:
       - "8080:8080"
     depends_on:
       - db
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+      ADMINER_DEFAULT_USER: app
+      ADMINER_DEFAULT_PASSWORD: 123
+      ADMINER_DEFAULT_DB: app
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: always
+    ports:
+      - "9001:9000" # Accès à Portainer : http://localhost:9001
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
 
 volumes:
   db-data:
