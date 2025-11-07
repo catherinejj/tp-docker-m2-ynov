@@ -1,0 +1,7 @@
+/vendor/
+/var/
+/.env
+/.env.dev
+/.env.test
+/.DS_Store
+.DS_Store
